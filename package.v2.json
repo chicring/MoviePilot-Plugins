@@ -3,7 +3,7 @@
         "name": "自动STRM创建",
         "description": "媒体入库后自动创建STRM文件并刷新媒体服务器，支持远程媒体路径映射",
         "labels": "媒体库",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "icon": "moose.png",
         "author": "chciring",
         "level": 2,
