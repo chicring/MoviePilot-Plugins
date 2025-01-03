@@ -20,9 +20,9 @@ class AutoStrmCreator(_PluginBase):
     # 插件描述
     plugin_desc = "媒体入库后自动创建STRM文件并刷新媒体服务器，支持远程媒体路径映射"
     # 插件图标
-    plugin_icon = "link.png"
+    plugin_icon = "moose.png"
     # 插件版本
-    plugin_version = "1.0"
+    plugin_version = "1.0.1"
     # 插件作者
     plugin_author = "chicring"
     # 作者主页
@@ -69,16 +69,18 @@ class AutoStrmCreator(_PluginBase):
         返回：源路径前缀、目标路径前缀、远程URL前缀、相对路径
         """
         for rule in self._path_mappings:
-            source_path, target_path, remote_url = self._parse_mapping_rule(rule)
-            if not all([source_path, target_path, remote_url]):
-                continue
+            # 逐行解析规则
+            for line in rule.split('\n'):
+                source_path, target_path, remote_url = self._parse_mapping_rule(line)
+                if not all([source_path, target_path, remote_url]):
+                    continue
 
-            # 移除路径中的通配符
-            source_path = source_path.replace('**/', '')
-            if file_path.startswith(source_path):
-                # 获取相对路径部分
-                relative_path = file_path[len(source_path):].lstrip('/')
-                return source_path, target_path, remote_url, relative_path
+                # 移除路径中的通配符
+                source_path = source_path.replace('**/', '')
+                if file_path.startswith(source_path):
+                    # 获取相对路径部分
+                    relative_path = file_path[len(source_path):].lstrip('/')
+                    return source_path, target_path, remote_url, relative_path
 
         return None, None, None, None
 
@@ -99,7 +101,7 @@ class AutoStrmCreator(_PluginBase):
             strm_file_path = os.path.splitext(strm_file_path)[0] + '.strm'
             
             # 构建远程URL
-            remote_file_url = f"{remote_url.rstrip('/')}/{os.path.join(source_prefix, relative_path)}"
+            remote_file_url = f"{remote_url.rstrip('/')}/{relative_path}"
             
             # 确保目录存在
             os.makedirs(os.path.dirname(strm_file_path), exist_ok=True)
@@ -111,7 +113,7 @@ class AutoStrmCreator(_PluginBase):
             logger.info(f"已创建STRM文件: {strm_file_path}")
             logger.debug(f"STRM文件内容: {remote_file_url}")
             return True
-            
+                
         except Exception as e:
             logger.error(f"创建STRM文件失败: {str(e)}")
             return False
