@@ -22,7 +22,7 @@ class AutoStrmCreator(_PluginBase):
     # 插件图标
     plugin_icon = "moose.png"
     # 插件版本
-    plugin_version = "1.0.1"
+    plugin_version = "1.0"
     # 插件作者
     plugin_author = "chicring"
     # 作者主页
@@ -76,7 +76,7 @@ class AutoStrmCreator(_PluginBase):
                     continue
 
                 # 移除路径中的通配符
-                source_path = source_path.replace('**/', '')
+                source_path = source_path.replace('/', '')
                 if file_path.startswith(source_path):
                     # 获取相对路径部分
                     relative_path = file_path[len(source_path):].lstrip('/')
@@ -290,8 +290,8 @@ class AutoStrmCreator(_PluginBase):
                                         'props': {
                                             'model': 'path_mappings',
                                             'label': '路径映射规则',
-                                            'placeholder': '**/ecloud/电影#**/link/电影#https://alist.example.com/d\n**/ecloud/剧集#**/link/剧集#https://alist.example.com/d',
-                                            'rows': 3,
+                                            'placeholder': '/ecloud/电影#/link/电影#https://alist.example.com/d',
+                                            'rows': 5,
                                             'hint': '格式：源路径#目标路径#远程URL，每行一个规则'
                                         }
                                     }
@@ -337,7 +337,7 @@ class AutoStrmCreator(_PluginBase):
                                             'variant': 'tonal',
                                             'text': '路径映射规则说明：\n'
                                                    '1. 每行一个规则，格式：源路径#目标路径#远程URL\n'
-                                                   '2. 例如：**/ecloud/电影#**/link/电影#https://alist.example.com/d\n'
+                                                   '2. 例如：/ecloud/电影#/link/电影#https://alist.example.com/d'
                                                    '3. 源路径：媒体文件实际存储的路径\n'
                                                    '4. 目标路径：STRM文件存储的路径\n'
                                                    '5. 远程URL：可访问到媒体文件的远程地址前缀',
